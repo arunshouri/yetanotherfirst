@@ -3,22 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualMachines_vm_qualys_win_name": {
-            "value": null
+            "value": "vm-qualys-test2"
         },
         "networkInterfaces_vm_qualys_win884_name": {
-            "value": null
+            "value": "nic-qualys-test2"
         },
         "publicIPAddresses_vm_qualys_win_ip_name": {
-            "value": null
+            "value": "pip-qualys-test2"
         },
         "virtualNetworks_vnet_cfe_qualys_agent_name": {
-            "value": null
+            "value": "vn-qualys-test2"
         },
         "networkSecurityGroups_vm_qualys_win_nsg_name": {
-            "value": null
+            "value": "nsg-qualys-test2"
         },
         "schedules_shutdown_computevm_vm_qualys_win_name": {
-            "value": null
+            "value": "shutdown-computevm-vm-qualys-win"
         }
     }
 }
