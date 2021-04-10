@@ -12,7 +12,7 @@
         "PIPName": "[concat('PIP-',parameters('NamingFormat'))]",
         "VNETName": "[concat('VNET-',parameters('NamingFormat'))]",
         "NSGName": "[concat('NSG-',parameters('NamingFormat'))]",
-        "ScheduleName": "[concat('compute-shutdownvm-',parameters('NamingFormat'))]"
+        "ScheduleName": "[concat('compute-shutdownvm-',variables('VirtualMachineName'))]"
     },
     "resources": [
         {
