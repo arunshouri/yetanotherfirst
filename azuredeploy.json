@@ -146,6 +146,7 @@
                 "osProfile": {
                     "computerName": "[parameters('virtualMachines_vm_qualys_win_name')]",
                     "adminUsername": "vccchef",
+                    "adminPassword": "ng0tha@va1aOp6iya",
                     "windowsConfiguration": {
                         "provisionVMAgent": true,
                         "enableAutomaticUpdates": true,
