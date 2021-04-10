@@ -2,37 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualMachines_vm_qualys_win_name": {
-            "defaultValue": "vm-qualys-win",
-            "type": "String"
-        },
-        "networkInterfaces_vm_qualys_win884_name": {
-            "defaultValue": "vm-qualys-win884",
-            "type": "String"
-        },
-        "publicIPAddresses_vm_qualys_win_ip_name": {
-            "defaultValue": "vm-qualys-win-ip",
-            "type": "String"
-        },
-        "virtualNetworks_vnet_cfe_qualys_agent_name": {
-            "defaultValue": "vnet-cfe-qualys-agent",
-            "type": "String"
-        },
-        "networkSecurityGroups_vm_qualys_win_nsg_name": {
-            "defaultValue": "vm-qualys-win-nsg",
-            "type": "String"
-        },
-        "schedules_shutdown_computevm_vm_qualys_win_name": {
-            "defaultValue": "shutdown-computevm-vm-qualys-win",
-            "type": "String"
+        "NamingFormat": {
+            "type": "string"
         }
     },
-    "variables": {},
+    "variables": {
+        "VirtualMachineName": "[concat('VM-',parameters('NamingFormat'))]",
+        "NICName": "[concat('NIC-',parameters('NamingFormat'))]",
+        "PIPName": "[concat('PIP-',parameters('NamingFormat'))]",
+        "VNETName": "[concat('VNET-',parameters('NamingFormat'))]",
+        "NSGName": "[concat('NSG-',parameters('NamingFormat'))]",
+        "ScheduleName": "[concat('Schedule-',parameters('NamingFormat'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('networkSecurityGroups_vm_qualys_win_nsg_name')]",
+            "name": "[variables('NSGName')]",
             "location": "westeurope",
             "tags": {
                 "AppID": "App-1234"
@@ -62,7 +48,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('publicIPAddresses_vm_qualys_win_ip_name')]",
+            "name": "[variables('PIPName')]",
             "location": "westeurope",
             "tags": {
                 "AppID": "App-1234"
@@ -81,7 +67,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('virtualNetworks_vnet_cfe_qualys_agent_name')]",
+            "name": "[variables('VNETName')]",
             "location": "westeurope",
             "tags": {
                 "AppID": "App-1234"
@@ -119,10 +105,10 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2020-12-01",
-            "name": "[parameters('virtualMachines_vm_qualys_win_name')]",
+            "name": "[variables('VirtualMachineName')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_vm_qualys_win884_name'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('NICName'))]"
             ],
             "tags": {
                 "AppID": "App-1234"
@@ -144,7 +130,7 @@
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "[parameters('virtualMachines_vm_qualys_win_name')]",
+                    "computerName": "[variables('VirtualMachineName')]",
                     "adminUsername": "vccchef",
                     "adminPassword": "ng0tha@va1aOp6iya",
                     "windowsConfiguration": {
@@ -161,7 +147,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_vm_qualys_win884_name'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('NICName'))]"
                         }
                     ]
                 },
@@ -175,10 +161,10 @@
         {
             "type": "microsoft.devtestlab/schedules",
             "apiVersion": "2018-09-15",
-            "name": "[parameters('schedules_shutdown_computevm_vm_qualys_win_name')]",
+            "name": "[variables('ScheduleName')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_vm_qualys_win_name'))]"
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('VirtualMachineName'))]"
             ],
             "tags": {
                 "AppID": "App-1234"
@@ -196,15 +182,15 @@
                     "emailRecipient": "arun.shourie@volvocars.com",
                     "notificationLocale": "en"
                 },
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_vm_qualys_win_name'))]"
+                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', variables('VirtualMachineName'))]"
             }
         },
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('networkSecurityGroups_vm_qualys_win_nsg_name'), '/RDP')]",
+            "name": "[concat(variables('NSGName'), '/RDP')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_vm_qualys_win_nsg_name'))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGName'))]"
             ],
             "properties": {
                 "protocol": "TCP",
@@ -224,9 +210,9 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('virtualNetworks_vnet_cfe_qualys_agent_name'), '/linux')]",
+            "name": "[concat(variables('VNETName'), '/linux')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vnet_cfe_qualys_agent_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('VNETName'))]"
             ],
             "properties": {
                 "addressPrefix": "10.0.0.32/27",
@@ -238,9 +224,9 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2020-11-01",
-            "name": "[concat(parameters('virtualNetworks_vnet_cfe_qualys_agent_name'), '/windows')]",
+            "name": "[concat(variables('VNETName'), '/windows')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vnet_cfe_qualys_agent_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('VNETName'))]"
             ],
             "properties": {
                 "addressPrefix": "10.0.0.0/27",
@@ -252,12 +238,12 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2020-11-01",
-            "name": "[parameters('networkInterfaces_vm_qualys_win884_name')]",
+            "name": "[variables('NICName')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_vm_qualys_win_ip_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_cfe_qualys_agent_name'), 'linux')]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_vm_qualys_win_nsg_name'))]"
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('PIPName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VNETName'), 'linux')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGName'))]"
             ],
             "tags": {
                 "AppID": "App-1234"
@@ -270,10 +256,10 @@
                             "privateIPAddress": "10.0.0.37",
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_vm_qualys_win_ip_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('PIPName'))]"
                             },
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vnet_cfe_qualys_agent_name'), 'linux')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('VNETName'), 'linux')]"
                             },
                             "primary": true,
                             "privateIPAddressVersion": "IPv4"
@@ -286,7 +272,7 @@
                 "enableAcceleratedNetworking": false,
                 "enableIPForwarding": false,
                 "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_vm_qualys_win_nsg_name'))]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('NSGName'))]"
                 }
             }
         }

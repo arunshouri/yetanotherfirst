@@ -2,23 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualMachines_vm_qualys_win_name": {
-            "value": "m-qualys-test2"
-        },
-        "networkInterfaces_vm_qualys_win884_name": {
-            "value": "nic-qualys-test2"
-        },
-        "publicIPAddresses_vm_qualys_win_ip_name": {
-            "value": "pip-qualys-test2"
-        },
-        "virtualNetworks_vnet_cfe_qualys_agent_name": {
-            "value": "vn-qualys-test2"
-        },
-        "networkSecurityGroups_vm_qualys_win_nsg_name": {
-            "value": "nsg-qualys-test2"
-        },
-        "schedules_shutdown_computevm_vm_qualys_win_name": {
-            "value": "shutdown-computevm-vm-qualys-test2"
+        "NamingFormat": {
+            "value": "qualys-test"
         }
     }
 }
