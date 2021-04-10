@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "virtualMachines_vm_qualys_win_name": {
-            "value": "vm-qualys-test2"
+            "value": "m-qualys-test2"
         },
         "networkInterfaces_vm_qualys_win884_name": {
             "value": "nic-qualys-test2"
