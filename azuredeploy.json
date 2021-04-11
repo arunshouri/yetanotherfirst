@@ -159,6 +159,14 @@
             }
         },
         {
+            "type": "resourceType/providers/serverVulnerabilityAssessments",
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('VirtualMachineName'))]"
+            ],
+            "name": "[concat(variables('VirtualMachineName'), '/Microsoft.Security/default')]",
+            "apiVersion": "2015-06-01-preview"
+        },
+        {
             "type": "microsoft.devtestlab/schedules",
             "apiVersion": "2018-09-15",
             "name": "[variables('ScheduleName')]",
